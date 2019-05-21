@@ -1,0 +1,12 @@
+<div id="filterstatus" class = "d-flex">
+    {{#urlbutton}}
+    <div class="mdl-align ml-auto">
+        <a href="{{{urlbutton}}}" class="btn btn-secondary">{{namebutton}}</a>
+    </div>
+    {{/urlbutton}}
+    {{#groupoutput}}
+        {{{groupoutput}}}
+    {{/groupoutput}}
+    <span id="filtervalue">{{#str}}all_results, quiz_teacheroverview{{/str}}</span>
+    <span>{{#str}}table_results, quiz_teacheroverview{{/str}}&nbsp</span>
+</div>

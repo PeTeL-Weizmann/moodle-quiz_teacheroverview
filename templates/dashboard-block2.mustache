@@ -1,0 +1,10 @@
+<div class="quiz_teacheroverview_dashboard_block2">
+    {{#block2}}
+        <h3 class="dashboard_block-title">{{#str}}question_details, quiz_teacheroverview{{/str}}</h3>
+        <div class ="question_details-wrapper">
+            {{#questions}}
+                <div id="dq{{slot}}" class="question_details-element {{badgecolor}}">{{slot}}</div>
+            {{/questions}}
+        </div>
+    {{/block2}}
+</div>

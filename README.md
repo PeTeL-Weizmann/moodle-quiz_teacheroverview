@@ -1,4 +1,4 @@
-Filter Team Work for assignment submission
+Teacher Overview report for quiz questions
 ============
 
 Version 3.6, release 1 - 2019.05.21
@@ -12,7 +12,7 @@ Change Log
 Purpose
 -------
 
-Smart report for quiz plugin allow to the teachers filter studnts by thiere results
+Teacher overview plugin allow to teachers filter students by scores and questions.
 [more](https://blog.devlion.co/moodle-quiz-report-teacheroverview/) 
 
 

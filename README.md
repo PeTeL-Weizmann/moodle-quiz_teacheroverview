@@ -12,7 +12,7 @@ Change Log
 Purpose
 -------
 
-Teacher overview plugin allow to teachers filter students by scores and questions.
+Quiz dashboard (report) displaying charts of student's progress and grades that enable filtering of student's progress table for actions like messaging and grouping
 [more](https://blog.devlion.co/moodle-quiz-report-teacheroverview/) 
 
 

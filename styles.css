@@ -280,3 +280,28 @@
 @media (max-width: 1024px) {
   #filterstatus .groupselector {
     margin-left: 1em; } }
+
+
+.excel-icon {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border: 1px solid $border_gray;
+  border-radius: 0 5px 5px 0;
+  border-left: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 75%;
+  background-image: url([[pix:quiz_teacheroverview|excel_icon]]);
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.centerbuttons {
+  display: flex;
+  justify-content: center;
+}

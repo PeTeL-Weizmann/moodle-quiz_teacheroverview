@@ -23,8 +23,8 @@
  */
 
 $string['showinggradedandungradednew'] = 'שיטת מתן הציונים עבור בוחן זה הוא {$a}.';
-$string['buttonchangedisplayfull'] = 'תצוגה מפורטת של ביצועי התלמידים';
-$string['buttonchangedisplaybasic'] = 'תצוגה מצומצמת של ביצועי התלמידים';
+$string['buttonchangedisplayfull'] = 'תצוגה מורחבת';
+$string['buttonchangedisplaybasic'] = 'תצוגה מצומצמת';
 
 $string['average_grade'] = 'ציון ממוצע';
 $string['max_grade'] = 'הציון הגבוה בכיתה';
@@ -38,10 +38,19 @@ $string['notstarted'] = 'לא התחילו';
 $string['pluginname'] = 'דוחות ציונים מתקדם';
 $string['teacheroverview'] = 'דוחות ציונים מתקדם';
 $string['attempts'] = 'מספר ניסיונות מענה';
+$string['deleteselected'] = 'מחיקת נסיונות';
+$string['closeattemptsselected'] = 'סגירת נסיונות';
+$string['sendmessage'] = 'שליחת מסר';
 
 // Filter status.
-$string['table_results'] = 'בטבלה מוצגים כעת:';
+$string['table_results'] = 'תוצאות המשימה:';
 $string['all_results'] = 'כל התלמידים';
 $string['filtered_results'] = 'תלמידים "{$a->label}" ({$a->value})';
 $string['filtered_results_failed_by_questions'] = 'נכשלו בשאלה {$a}';
 $string['filtered_results_succeeded_by_questions'] = 'הצליחו בשאלה{$a}';
+
+$string['regradeall'] = 'חישוב מחדש של כל הציונים';
+$string['regradealldry'] = 'צפיה מקדימה בחישוב מחדש של כל הציונים';
+$string['regradeselected'] = 'מתן ציון';
+
+$string['backreturnto'] = 'Back';

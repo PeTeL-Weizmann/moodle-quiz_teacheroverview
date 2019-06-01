@@ -20,6 +20,7 @@
  * @package   quiz_teacheroverview
  * @copyright 2011 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Devlion Moodle Development <service@devlion.co> 
  */
 
 defined('MOODLE_INTERNAL') || die();

@@ -17,9 +17,10 @@
 /**
  * This file defines the quiz overview report class.
  *
- * @package   quiz_overview
+ * @package   quiz_teacheroverview
  * @copyright 1999 onwards Martin Dougiamas and others {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Devlion Moodle Development <service@devlion.co> 
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -29,6 +30,7 @@ require_once($CFG->dirroot . '/mod/quiz/report/teacheroverview/lib.php');
 require_once($CFG->dirroot . '/mod/quiz/report/teacheroverview/overview_options.php');
 require_once($CFG->dirroot . '/mod/quiz/report/teacheroverview/overview_form.php');
 require_once($CFG->dirroot . '/mod/quiz/report/teacheroverview/overview_table.php');
+require_once($CFG->dirroot . '/mod/quiz/report/teacheroverview/classes/output/core_renderer.php');
 
 /**
  * Quiz report subclass for the overview (grades) report.
@@ -41,13 +43,14 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
     protected $displayfull = true;
 
     public function display($quiz, $cm, $course) {
-        global $DB, $OUTPUT, $PAGE;
+        global $DB, $OUTPUT, $PAGE, $CFG;
 
         if (optional_param('display', 'basic', PARAM_TEXT) == 'basic') {
             $this->displayfull = false;
         }
 
         $PAGE->requires->css('/mod/quiz/report/teacheroverview/styles/nv.d3.min.css');
+        $PAGE->requires->css('/mod/quiz/report/teacheroverview/styles/teacheroverview_toggle.css');
 
         list($currentgroup, $studentsjoins, $groupstudentsjoins, $allowedjoins) = $this->init(
                 'teacheroverview', 'quiz_teacheroverview_settings_form', $quiz, $cm, $course);
@@ -273,19 +276,65 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
 
             $urlbutton = '';
             $namebutton = '';
+            $displayfull = true;
+            $download = '';
+
             if (!$table->is_downloading()) {
                 if ($this->displayfull) {
                     $urlbutton = new moodle_url($PAGE->url, array('display' => 'basic'));
-                    $namebutton = get_string('buttonchangedisplaybasic', 'quiz_teacheroverview');
+                    $namebutton = get_string('buttonchangedisplayfull', 'quiz_teacheroverview');
+                    $displayfull = true;
                 } else {
                     $urlbutton = new moodle_url($PAGE->url, array('display' => 'full'));
                     $namebutton = get_string('buttonchangedisplayfull', 'quiz_teacheroverview');
+                    $displayfull = false;
                 }
+
+                // Download button.
+                $this->baseurl = new moodle_url($PAGE->url);
+                $newparams = $this->baseurl->params();
+                $newparams['display'] = optional_param('display', 'basic' ,PARAM_TEXT);
+                $newparams['attempts'] = 'enrolled_any';
+                $newparams['onlygraded'] = '';
+                $newparams['onlygreraded'] = '';
+
+                $download .= '<div>';
+
+                $download .= (new quiz_teacheroverview\output\mod_quiz_teacheroverview_renderer($PAGE, null))->download_dataformat_selector_csv(get_string('downloadas', 'table'),
+
+                $this->baseurl->out_omit_querystring(), 'download', $newparams);
+                $download .= '</div>';
+            }
+
+            // Buttons.
+            $buttons = '';
+
+            if (has_capability('mod/quiz:deleteattempts', $this->context)) {
+                $buttons .=  '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="deleteattemptsbutton" name="delete" value="' .
+                    get_string('deleteselected', 'quiz_teacheroverview') . '"/>';
+                $PAGE->requires->event_handler('#deleteattemptsbutton', 'click', 'M.util.show_confirm_dialog',
+                    array('message' => get_string('deleteattemptcheck', 'quiz')));
+
+                $buttons .=  '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="closeattemptsbutton" name="closeattempts" value="' .
+                    get_string('closeattemptsselected', 'quiz_teacheroverview') . '"/>';
+            }
+
+            if (has_capability('mod/quiz:regrade', $this->context)) {
+                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" name="regrade" value="' .
+                    get_string('regradeselected', 'quiz_teacheroverview') . '"/>';
             }
 
             // Chart's filter status block.
             echo $OUTPUT->render_from_template('quiz_teacheroverview/filterstatus',
-                    ["urlbutton" => $urlbutton, "namebutton" => $namebutton, 'groupoutput' => $groupoutput]);
+                    [
+                        "urlbutton" => $urlbutton,
+                        "namebutton" => $namebutton,
+                        'groupoutput' => $groupoutput,
+                        'download' => $download,
+                        'displayfull' => $displayfull,
+                        'buttons' => $buttons
+                    ]
+                );
 
             // Define table columns.
             $columns = array();
@@ -353,14 +402,15 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                     $regradealllabel =
                             get_string('regradeall', 'quiz_teacheroverview');
                 }
+
                 $displayurl = new moodle_url($options->get_url(), array('sesskey' => sesskey()));
 
                 echo '</br>';
-                echo '<div class="mdl-align">';
+                echo '<div class="mdl-align centerbuttons">';
                 echo '<form action="' . $displayurl->out_omit_querystring() . '">';
                 echo '<div>';
                 echo html_writer::input_hidden_params($displayurl);
-                echo '<input type="submit" class="btn btn-secondary" name="regradeall" value="' . $regradealllabel . '"/>';
+                echo '<input type="submit" class="btn btn-secondary m-r-1" name="regradeall" value="' . $regradealllabel . '"/>';
 
                 if ($this->displayfull) {
                     echo '<input type="submit" class="btn btn-secondary m-l-1" name="regradealldry" value="' .
@@ -372,9 +422,24 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                 }
                 echo '</div>';
                 echo '</form>';
+                
+                // Send massage to selected users.
+
+                $sendmessagelabel =
+                get_string('sendmessage', 'quiz_teacheroverview');
+
+                echo '<input type="button" id="sendmessage" form="participantsform" class="btn btn-secondary m-r-1" name="sendmessage" value="' . $sendmessagelabel . '"/>';
+
                 echo '</div>';
             }
         }
+
+        $options = new stdClass();
+        $options->courseid = $course->id;
+        $options->noteStateNames = note_get_state_names();
+        $options->stateHelpIcon = $OUTPUT->help_icon('publishstate', 'notes');
+
+        $PAGE->requires->js_call_amd('quiz_teacheroverview/participants', 'init', [$options]);
 
         $PAGE->requires->js_call_amd('quiz_teacheroverview/charts', 'init', array($block3j, $block4j, $quiz->grade));
 

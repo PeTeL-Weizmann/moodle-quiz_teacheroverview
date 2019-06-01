@@ -17,9 +17,10 @@
 /**
  * Strings for component 'quiz_overview', language 'en', branch 'MOODLE_20_STABLE'
  *
- * @package   quiz_overview
+ * @package   quiz_teacheroverview
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Devlion Moodle Development <service@devlion.co> 
  */
 
 $string['allattempts'] = 'Show all attempts';
@@ -27,7 +28,7 @@ $string['allattemptscontributetograde'] = 'All attempts contribute to final grad
 $string['allstudents'] = 'Show all {$a}';
 $string['attemptsonly'] = 'Show {$a} with attempts only';
 $string['attemptsprepage'] = 'Attempts shown per page';
-$string['deleteselected'] = 'Delete selected attempts';
+$string['deleteselected'] = 'Delete attempts';
 $string['done'] = 'Done';
 $string['err_failedtodeleteregrades'] = 'Failed to delete calculated attempt grades';
 $string['err_failedtorecalculateattemptgrades'] = 'Failed to recalculate attempt grades';
@@ -63,7 +64,7 @@ $string['regradealldrygroup'] = 'Dry run a full regrade for group \'{$a->groupna
 $string['regradeallgroup'] = 'Full regrade for group \'{$a->groupname}\'';
 $string['regradecomplete'] = 'Regrade completed successfully';
 $string['regradeheader'] = 'Regrading';
-$string['regradeselected'] = 'Regrade selected attempts';
+$string['regradeselected'] = 'Regrade attempts';
 $string['regradingattemptxofy'] = 'Regrading attempt ({$a->done}/{$a->count})';
 $string['show'] = 'Show / download';
 $string['showattempts'] = 'Only show / download attempts';
@@ -75,9 +76,10 @@ $string['showinggradedandungradednew'] = 'The grading method for this quiz is {$
 $string['studentingroup'] = '\'{$a->coursestudent}\' in group \'{$a->groupname}\'';
 $string['studentingrouplong'] = '\'{$a->coursestudent}\' in this group';
 
-$string['closeattemptsselected'] = 'Close Attempts';
-$string['buttonchangedisplayfull'] = 'Full report of students';
-$string['buttonchangedisplaybasic'] = 'Basic report of students';
+$string['closeattemptsselected'] = 'Close attempts';
+$string['buttonchangedisplayfull'] = 'Full report';
+$string['buttonchangedisplaybasic'] = 'Basic report';
+$string['sendmessage'] = 'Send a message';
 
 // Teacher overview native.
 $string['average_grade'] = 'Average grade';
@@ -92,8 +94,10 @@ $string['notstarted'] = 'Not started';
 $string['attempts'] = 'Total Attempts';
 
 // Filter status.
-$string['table_results'] = 'Table results:';
+$string['table_results'] = 'Results:';
 $string['all_results'] = 'All students';
 $string['filtered_results'] = 'students "{$a->label}" ({$a->value})';
 $string['filtered_results_failed_by_questions'] = 'failed in question {$a}';
 $string['filtered_results_succeeded_by_questions'] = 'succeeded in question {$a}';
+
+$string['backreturnto'] = 'Back';

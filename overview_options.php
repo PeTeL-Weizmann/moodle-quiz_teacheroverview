@@ -17,9 +17,10 @@
 /**
  * Class to store the options for a {@link quiz_overview_report}.
  *
- * @package   quiz_overview
+ * @package   quiz_teacheroverview
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Devlion Moodle Development <service@devlion.co> 
  */
 
 

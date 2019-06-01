@@ -17,10 +17,11 @@
 /**
  * This file renders the quiz overview graph.
  *
- * @package   quiz_overview
+ * @package   quiz_teacheroverview
  * @copyright 2008 Jamie Pratt
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @deprecated since Moodle 3.2
+ * @author    Devlion Moodle Development <service@devlion.co> 
  */
 
 

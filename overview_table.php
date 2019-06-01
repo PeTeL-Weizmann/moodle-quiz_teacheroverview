@@ -512,4 +512,9 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
             return '';
         }
     }
+
+    public function download_buttons() {
+        global $OUTPUT;
+        return;
+    }
 }

@@ -8,7 +8,7 @@
 
 label.toggle-switch {
   margin-bottom: 0px !important;
-  vertical-align: middle;
+  vertical-align: text-top;
 }
 
 /* Hide default HTML checkbox */

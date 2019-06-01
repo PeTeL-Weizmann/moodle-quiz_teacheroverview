@@ -413,11 +413,11 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                 echo '<input type="submit" class="btn btn-secondary m-r-1" name="regradeall" value="' . $regradealllabel . '"/>';
 
                 if ($this->displayfull) {
-                    echo '<input type="submit" class="btn btn-secondary m-l-1" name="regradealldry" value="' .
+                    echo '<input type="submit" class="btn btn-secondary m-r-1" name="regradealldry" value="' .
                             $regradealldrylabel . '"/>';
                 }
                 if ($regradesneeded) {
-                    echo '<input type="submit" class="btn btn-secondary m-l-1" name="regradealldrydo" value="' .
+                    echo '<input type="submit" class="btn btn-secondary m-r-1" name="regradealldrydo" value="' .
                             $regradealldrydolabel . '"/>';
                 }
                 echo '</div>';

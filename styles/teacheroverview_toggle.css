@@ -65,3 +65,11 @@ label.toggle-switch {
 .toggle-switch-area .toggle-slider.round:before {
   border-radius: 50%;
 }
+
+.average-grade-value {
+  text-align: center;
+  cursor: pointer;
+}
+.average-grade-value.not-clicable {
+  cursor: auto;
+}

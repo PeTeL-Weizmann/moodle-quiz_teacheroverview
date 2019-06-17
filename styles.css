@@ -296,12 +296,12 @@
   overflow: hidden;
 }
 
-.hidden {
+#page-mod-quiz-report .hidden {
   display: none !important;
   visibility: hidden !important;
 }
 
-.centerbuttons {
+#page-mod-quiz-report .centerbuttons {
   display: flex;
   justify-content: center;
 }

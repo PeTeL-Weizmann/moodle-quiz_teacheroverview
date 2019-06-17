@@ -234,7 +234,9 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
         if ($groupmode = groups_get_activity_groupmode($cm)) {
             // Groups are being used, so output the group selector if we are not downloading.
             if (!$table->is_downloading()) {
-                $groupoutput = groups_print_activity_menu($cm, $options->get_url(), true);
+                $d = ($this->displayfull == true) ? 'full' : 'basic';
+                $defaulturl = new moodle_url($options->get_url(), array('display' => $d));
+                $groupoutput = groups_print_activity_menu($cm, $defaulturl, true);
             }
         }
 
@@ -300,7 +302,8 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
 
                 $download .= '<div>';
 
-                $download .= (new quiz_teacheroverview\output\mod_quiz_teacheroverview_renderer($PAGE, null))->download_dataformat_selector_csv(get_string('downloadas', 'table'),
+                $download .= (new quiz_teacheroverview\output\mod_quiz_teacheroverview_renderer($PAGE, 
+                    null))->download_dataformat_selector_csv(get_string('downloadas', 'table'),
 
                 $this->baseurl->out_omit_querystring(), 'download', $newparams);
                 $download .= '</div>';
@@ -310,12 +313,12 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             $buttons = '';
 
             if (has_capability('mod/quiz:deleteattempts', $this->context)) {
-                $buttons .=  '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="deleteattemptsbutton" name="delete" value="' .
+                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="deleteattemptsbutton" name="delete" value="' .
                     get_string('deleteselected', 'quiz_teacheroverview') . '"/>';
                 $PAGE->requires->event_handler('#deleteattemptsbutton', 'click', 'M.util.show_confirm_dialog',
                     array('message' => get_string('deleteattemptcheck', 'quiz')));
 
-                $buttons .=  '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="closeattemptsbutton" name="closeattempts" value="' .
+                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="closeattemptsbutton" name="closeattempts" value="' .
                     get_string('closeattemptsselected', 'quiz_teacheroverview') . '"/>';
             }
 
@@ -327,12 +330,12 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             // Chart's filter status block.
             echo $OUTPUT->render_from_template('quiz_teacheroverview/filterstatus',
                     [
-                        "urlbutton" => $urlbutton,
-                        "namebutton" => $namebutton,
-                        'groupoutput' => $groupoutput,
-                        'download' => $download,
-                        'displayfull' => $displayfull,
-                        'buttons' => $buttons
+                        "urlbutton"     => $urlbutton,
+                        "namebutton"    => $namebutton,
+                        'groupoutput'   => $groupoutput,
+                        'download'      => $download,
+                        'displayfull'   => $displayfull,
+                        'buttons'       => $buttons
                     ]
                 );
 
@@ -984,8 +987,26 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             $record->mingrade = '-';
         } else {
             $record->averagegrade = round(quiz_rescale_grade($record->averagegrade, $quiz, false), 1);
-            $record->maxgrade = round(quiz_rescale_grade($record->maxgrade, $quiz, false), 1);
-            $record->mingrade = round(quiz_rescale_grade($record->mingrade, $quiz, false), 1);
+            $record->maxgrade = round(quiz_rescale_grade($record->maxgrade, $quiz, false));
+            $record->mingrade = round(quiz_rescale_grade($record->mingrade, $quiz, false));
+        }
+
+        $record->str_max_grade = 'max_grade';
+        $record->title_max_grade = get_string('max_grade', 'quiz_teacheroverview');
+
+        $record->str_min_grade = 'min_grade';
+        $record->title_min_grade = get_string('min_grade', 'quiz_teacheroverview');
+
+        $record->str_attempts_grade = 'attempts';
+        $record->title_attempts_grade = get_string('attempts', 'quiz_teacheroverview');
+
+        // If group
+        if(count($params) > 2){
+            $record->str_max_grade = 'max_grade_group';
+            $record->title_max_grade = get_string('max_grade_group', 'quiz_teacheroverview');
+
+            $record->str_min_grade = 'min_grade_group';
+            $record->title_min_grade = get_string('min_grade_group', 'quiz_teacheroverview');
         }
 
         return $record;
@@ -1110,13 +1131,7 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             $questions[$i]->slot = $i;
 
             // Compute ratio of correct answers to all answers and define proper badge color.
-            if ($usersfinished != 0) {
-                $questions[$i]->ratio = $questions[$i]->rigthqcount / $usersfinished;
-            } else {
-                // In case no one passed the quiz.
-                $questions[$i]->ratio = 0;
-            }
-
+            $questions[$i]->ratio = $questions[$i]->rigthqcount / $usersfinished;
             if ($questions[$i]->ratio == 1) {
                 $questions[$i]->badgecolor = 'green';
             } else if ($questions[$i]->ratio >= 0.5 && $questions[$i]->ratio < 1) {

@@ -25,6 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2019060101;
+$plugin->version  = 2019061700;
 $plugin->requires = 2017050500;
 $plugin->component = 'quiz_teacheroverview';

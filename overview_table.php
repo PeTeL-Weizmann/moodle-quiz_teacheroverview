@@ -267,7 +267,7 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
         }
         return html_writer::link(new moodle_url('/mod/quiz/review.php',
                 array('attempt' => $attempt->attempt)), $grade,
-                array('title' => get_string('reviewattempt', 'quiz')));
+                array('title' => get_string('reviewattempt', 'quiz'), 'data-rel' => $grade));
     }
 
     /**

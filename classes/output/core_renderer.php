@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die;
  * @package    quiz_teacheroverview
  * @copyright  2012 Bas Brands, www.basbrands.nl
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @author     Devlion Moodle Development <service@devlion.co> 
+ * @author     Devlion Moodle Development <service@devlion.co>
  */
 
 class mod_quiz_teacheroverview_renderer extends \core_renderer {
@@ -49,7 +49,7 @@ class mod_quiz_teacheroverview_renderer extends \core_renderer {
                 $options[] = array(
                     'value' => $format->name,
                     'label' => get_string('dataformat', $format->component),
-                    'selected' =>  $format->name == 'csv' ? 'selected' : '',
+                    'selected' => $format->name == 'csv' ? 'selected' : '',
                 );
             }
         }

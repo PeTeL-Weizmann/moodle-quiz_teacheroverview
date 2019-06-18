@@ -20,7 +20,7 @@
  * @package   quiz_teacheroverview
  * @copyright 1999 onwards Martin Dougiamas and others {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @author    Devlion Moodle Development <service@devlion.co> 
+ * @author    Devlion Moodle Development <service@devlion.co>
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -228,7 +228,10 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                 'block3' => $block3,
                 'block4' => $block4,
         ];
-        echo $OUTPUT->render_from_template('quiz_teacheroverview/dashboard', $dashboardcontext);
+
+        if (!$table->is_downloading()) {
+            echo $OUTPUT->render_from_template('quiz_teacheroverview/dashboard', $dashboardcontext);
+        }
 
         $groupoutput = '';
         if ($groupmode = groups_get_activity_groupmode($cm)) {
@@ -295,14 +298,14 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                 // Download button.
                 $this->baseurl = new moodle_url($PAGE->url);
                 $newparams = $this->baseurl->params();
-                $newparams['display'] = optional_param('display', 'basic' ,PARAM_TEXT);
+                $newparams['display'] = optional_param('display', 'basic', PARAM_TEXT);
                 $newparams['attempts'] = 'enrolled_any';
                 $newparams['onlygraded'] = '';
                 $newparams['onlygreraded'] = '';
 
                 $download .= '<div>';
 
-                $download .= (new quiz_teacheroverview\output\mod_quiz_teacheroverview_renderer($PAGE, 
+                $download .= (new quiz_teacheroverview\output\mod_quiz_teacheroverview_renderer($PAGE,
                     null))->download_dataformat_selector_csv(get_string('downloadas', 'table'),
 
                 $this->baseurl->out_omit_querystring(), 'download', $newparams);
@@ -313,12 +316,14 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             $buttons = '';
 
             if (has_capability('mod/quiz:deleteattempts', $this->context)) {
-                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="deleteattemptsbutton" name="delete" value="' .
+                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1"
+                    id="deleteattemptsbutton" name="delete" value="' .
                     get_string('deleteselected', 'quiz_teacheroverview') . '"/>';
                 $PAGE->requires->event_handler('#deleteattemptsbutton', 'click', 'M.util.show_confirm_dialog',
                     array('message' => get_string('deleteattemptcheck', 'quiz')));
 
-                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1" id="closeattemptsbutton" name="closeattempts" value="' .
+                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1"
+                    id="closeattemptsbutton" name="closeattempts" value="' .
                     get_string('closeattemptsselected', 'quiz_teacheroverview') . '"/>';
             }
 
@@ -327,18 +332,19 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                     get_string('regradeselected', 'quiz_teacheroverview') . '"/>';
             }
 
-            // Chart's filter status block.
-            echo $OUTPUT->render_from_template('quiz_teacheroverview/filterstatus',
-                    [
-                        "urlbutton"     => $urlbutton,
-                        "namebutton"    => $namebutton,
-                        'groupoutput'   => $groupoutput,
-                        'download'      => $download,
-                        'displayfull'   => $displayfull,
-                        'buttons'       => $buttons
+            if (!$table->is_downloading()) {
+                // Chart's filter status block.
+                echo $OUTPUT->render_from_template('quiz_teacheroverview/filterstatus',
+                [
+                    "urlbutton"     => $urlbutton,
+                    "namebutton"    => $namebutton,
+                    'groupoutput'   => $groupoutput,
+                    'download'      => $download,
+                    'displayfull'   => $displayfull,
+                    'buttons'       => $buttons
                     ]
                 );
-
+            }
             // Define table columns.
             $columns = array();
             $headers = array();
@@ -425,13 +431,14 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                 }
                 echo '</div>';
                 echo '</form>';
-                
+
                 // Send massage to selected users.
 
                 $sendmessagelabel =
                 get_string('sendmessage', 'quiz_teacheroverview');
 
-                echo '<input type="button" id="sendmessage" form="participantsform" class="btn btn-secondary m-r-1" name="sendmessage" value="' . $sendmessagelabel . '"/>';
+                echo '<input type="button" id="sendmessage" form="participantsform"
+                    class="btn btn-secondary m-r-1" name="sendmessage" value="' . $sendmessagelabel . '"/>';
 
                 echo '</div>';
             }
@@ -1000,8 +1007,8 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
         $record->str_attempts_grade = 'attempts';
         $record->title_attempts_grade = get_string('attempts', 'quiz_teacheroverview');
 
-        // If group
-        if(count($params) > 2){
+        // If group.
+        if (count($params) > 2) {
             $record->str_max_grade = 'max_grade_group';
             $record->title_max_grade = get_string('max_grade_group', 'quiz_teacheroverview');
 

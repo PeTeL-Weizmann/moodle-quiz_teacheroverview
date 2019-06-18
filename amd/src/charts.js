@@ -197,9 +197,6 @@ define(['jquery', 'quiz_teacheroverview/d3', 'quiz_teacheroverview/nvd3amd', 'co
 
             // SG - filtering attempts table by grades.
             $('.quiz_teacheroverview_dashboard_block1 .clickable-grade').click(function (e) {
-                //var searchParams = new URLSearchParams(window.location.search);
-                //var displayparam = searchParams.get('display');
-
                 var filtergrade = $(this).attr('data-rel');
                 var filtertitle = $(this).attr('data-title');
 
@@ -220,7 +217,7 @@ define(['jquery', 'quiz_teacheroverview/d3', 'quiz_teacheroverview/nvd3amd', 'co
                 }); // Set filter status before table.
                 $("HTML, BODY").animate({scrollTop: $("#attempts").offset().top}, 800); // Scroll to the results table body.
             });
-            
+
         } // init end
     };
 });

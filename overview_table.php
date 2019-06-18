@@ -20,7 +20,7 @@
  * @package   quiz_teacheroverview
  * @copyright 2008 Jamie Pratt
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @author    Devlion Moodle Development <service@devlion.co> 
+ * @author    Devlion Moodle Development <service@devlion.co>
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -435,10 +435,10 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
                         $html, array('class' => 'reviewlink'));
     }
 
-    function finish_html() {
+    public function finish_html() {
         global $OUTPUT;
         if (!$this->started_output) {
-            //no data has been added to the table.
+            // No data has been added to the table.
             $this->print_nothing_to_display();
 
         } else {
@@ -472,32 +472,35 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
      * @param array $headers numerical keyed array of displayed string titles
      * for each column.
      */
-    function define_headers($headers) {
+    public function define_headers($headers) {
         global $PAGE;
 
-        // Select all / Deselect all.
-        $checkboxhader = '';
-        $checkboxhader .= '<div id="commands">';
-        $checkboxhader .= '<a id="checkattempts" href="#">' .
-                get_string('selectall', 'quiz') . '</a> / ';
-        $checkboxhader .= '<a id="uncheckattempts" href="#">' .
-                get_string('selectnone', 'quiz') . '</a> ';
-        $PAGE->requires->js_amd_inline("
-        require(['jquery'], function($) {
-            $('#checkattempts').click(function(e) {
-                $('#attemptsform').find('input:checkbox').prop('checked', true);
-                e.preventDefault();
-            });
-            $('#uncheckattempts').click(function(e) {
-                $('#attemptsform').find('input:checkbox').prop('checked', false);
-                e.preventDefault();
-            });
-        });");
-        $checkboxhader .= '&nbsp;&nbsp;';
-        $checkboxhader .= '</div>';
+        if (!$this->is_downloading()) {
+            // Select all / Deselect all.
+            $checkboxhader = '';
+            $checkboxhader .= '<div id="commands">';
+            $checkboxhader .= '<a id="checkattempts" href="#">' .
+            get_string('selectall', 'quiz') . '</a> / ';
+            $checkboxhader .= '<a id="uncheckattempts" href="#">' .
+            get_string('selectnone', 'quiz') . '</a> ';
+            $PAGE->requires->js_amd_inline("
+                require(['jquery'], function($) {
+                    $('#checkattempts').click(function(e) {
+                        $('#attemptsform').find('input:checkbox').prop('checked', true);
+                        e.preventDefault();
+                    });
+                    $('#uncheckattempts').click(function(e) {
+                        $('#attemptsform').find('input:checkbox').prop('checked', false);
+                        e.preventDefault();
+                    });
+                });");
+            $checkboxhader .= '&nbsp;&nbsp;';
+            $checkboxhader .= '</div>';
 
-        $headers[0] = $checkboxhader;
+            $headers[0] = $checkboxhader;
+        }
         $this->headers = $headers;
+
     }
 
     /**
@@ -507,7 +510,8 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
      */
     public function col_checkbox($attempt) {
         if ($attempt->attempt) {
-            return '<input type="checkbox" name="attemptid[]" value="'.$attempt->attempt.'" data-userid="'.$attempt->userid.'" class="userid-checkbox" />';
+            return '<input type="checkbox" name="attemptid[]" value="'.$attempt->attempt.'
+                " data-userid="'.$attempt->userid.'" class="userid-checkbox" />';
         } else {
             return '';
         }

@@ -20,7 +20,7 @@
  * @package   quiz_teacheroverview
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @author    Devlion Moodle Development <service@devlion.co> 
+ * @author    Devlion Moodle Development <service@devlion.co>
  */
 
 $string['allattempts'] = 'Show all attempts';

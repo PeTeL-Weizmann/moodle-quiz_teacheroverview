@@ -435,6 +435,32 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
                         $html, array('class' => 'reviewlink'));
     }
 
+    public function wrap_html_start() {
+        global $PAGE;
+
+        if ($this->is_downloading() || !$this->includecheckboxes) {
+            return;
+        }
+
+        $url = $this->options->get_url();
+        $url->param('sesskey', sesskey());
+
+        echo '<div id="tablecontainer">';
+        echo '<form id="attemptsform" method="post" action="' . $url->out_omit_querystring() . '">';
+
+        echo html_writer::input_hidden_params($url);
+
+        if (has_capability('mod/quiz:deleteattempts', $this->context)) {
+            echo '<input type="hidden" class="btn btn-secondary m-r-1"
+                id="deleteattemptsbutton" name="delete" value="' .
+                get_string('deleteselected', 'quiz_teacheroverview') . '"/>';
+            $PAGE->requires->event_handler('#deleteattemptsbutton', 'click', 'M.util.show_confirm_dialog',
+                array('message' => get_string('deleteattemptcheck', 'quiz')));
+        }
+
+        echo '<div>';
+    }
+
     public function finish_html() {
         global $OUTPUT;
         if (!$this->started_output) {

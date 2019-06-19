@@ -316,11 +316,17 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             $buttons = '';
 
             if (has_capability('mod/quiz:deleteattempts', $this->context)) {
-                $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1"
-                    id="deleteattemptsbutton" name="delete" value="' .
-                    get_string('deleteselected', 'quiz_teacheroverview') . '"/>';
-                $PAGE->requires->event_handler('#deleteattemptsbutton', 'click', 'M.util.show_confirm_dialog',
-                    array('message' => get_string('deleteattemptcheck', 'quiz')));
+                $buttons .= '<input type="submit" class="btn btn-secondary m-r-1"
+                id="deleteattemptsbuttonui" name="deleteui" value="' .
+                get_string('deleteselected', 'quiz_teacheroverview') . '"/>';
+
+                $PAGE->requires->js_amd_inline("
+                require(['jquery'], function($) {
+                    $('#deleteattemptsbuttonui').click(function(e) {
+                        e.preventDefault();
+                        $('#deleteattemptsbutton').click();
+                    });
+                });");
 
                 $buttons .= '<input type="submit" form="attemptsform" class="btn btn-secondary m-r-1"
                     id="closeattemptsbutton" name="closeattempts" value="' .

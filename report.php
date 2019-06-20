@@ -1144,7 +1144,11 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             $questions[$i]->slot = $i;
 
             // Compute ratio of correct answers to all answers and define proper badge color.
-            $questions[$i]->ratio = $questions[$i]->rigthqcount / $usersfinished;
+            if ($usersfinished != 0) {
+                $questions[$i]->ratio = $questions[$i]->rigthqcount / $usersfinished;
+            } else {
+                $questions[$i]->ratio = null;
+            }
             if ($questions[$i]->ratio == 1) {
                 $questions[$i]->badgecolor = 'green';
             } else if ($questions[$i]->ratio >= 0.5 && $questions[$i]->ratio < 1) {

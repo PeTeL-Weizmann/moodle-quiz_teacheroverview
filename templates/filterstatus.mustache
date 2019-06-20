@@ -1,12 +1,29 @@
 <div id="filterstatus" class = "d-flex">
-    {{#urlbutton}}
-    <div class="mdl-align ml-auto">
-        <a href="{{{urlbutton}}}" class="btn btn-secondary">{{namebutton}}</a>
-    </div>
-    {{/urlbutton}}
+
+    {{{download}}}
+    
+    {{#buttons}}
+        {{{buttons}}}
+    {{/buttons}}
+
     {{#groupoutput}}
         {{{groupoutput}}}
     {{/groupoutput}}
-    <span id="filtervalue">{{#str}}all_results, quiz_teacheroverview{{/str}}</span>
+
+    {{#urlbutton}}
+    <div class="mdl-align ml-auto">
+        <a href="{{{urlbutton}}}" class="btn btn-secondary toggle-switch-area m-r-1">
+            <label class="toggle-switch">
+                <span class="toggle-slider round {{#displayfull}}toggle-checked{{/displayfull}}"></span>
+            </label>
+            <span class="">
+                    {{namebutton}}
+            </span>
+        </a>
+    </div>
+    {{/urlbutton}}
+
+    <span id="filtervalue">{{#str}}all_results, quiz_teacheroverview{{/str}}&nbsp</span>
     <span>{{#str}}table_results, quiz_teacheroverview{{/str}}&nbsp</span>
+
 </div>

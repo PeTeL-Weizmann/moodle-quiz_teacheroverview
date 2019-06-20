@@ -195,6 +195,29 @@ define(['jquery', 'quiz_teacheroverview/d3', 'quiz_teacheroverview/nvd3amd', 'co
                 var t = $('.quiz_teacheroverview_dashboard_block2 .question_details-element#dq' + qparam).trigger("click");
             }
 
+            // SG - filtering attempts table by grades.
+            $('.quiz_teacheroverview_dashboard_block1 .clickable-grade').click(function (e) {
+                var filtergrade = $(this).attr('data-rel');
+                var filtertitle = $(this).attr('data-title');
+
+                $('#attempts tbody tr').not('.emptyrow').each(function () {
+                    $(this).show();         // Reset table view - show all rows.
+                    $(this).toggle();       // Hide every row.
+                });
+
+                $('.teacheroverviewgrades a').each(function () {
+                    if($(this).attr('data-rel') == filtergrade){
+                        $(this).parent().parent().show();
+                    }
+                });
+
+                var filteredResults = str.get_string(filtertitle, 'quiz_teacheroverview', e.target.innerHTML);
+                filteredResults.done(function (val) {
+                    $("#filtervalue").addClass('filtered').html(val);
+                }); // Set filter status before table.
+                $("HTML, BODY").animate({scrollTop: $("#attempts").offset().top}, 800); // Scroll to the results table body.
+            });
+
         } // init end
     };
 });

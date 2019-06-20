@@ -17,13 +17,14 @@
 /**
  * Quiz overview report version information.
  *
- * @package   quiz_overview
+ * @package   quiz_teacheroverview
  * @copyright 2008 Jamie Pratt
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Devlion Moodle Development <service@devlion.co>
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2019052104;
+$plugin->version  = 2019061700;
 $plugin->requires = 2017050500;
 $plugin->component = 'quiz_teacheroverview';

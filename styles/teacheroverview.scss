@@ -4,7 +4,7 @@
 
 #filterstatus {
     margin-bottom: 15px;
-    flex-direction: row-reverse;
+    // flex-direction: row-reverse;
     align-items: center;
     .groupselector {
       margin-left: 6em;
@@ -300,13 +300,13 @@
 .nvd3-svg {
     direction: ltr;
 }
-@media (max-width: 1024px) {
 
-  #filterstatus {
-      .groupselector {
-        margin-left: 1em;
-      }
-  }
+@media (max-width: 1024px) {
+    #filterstatus {
+        .groupselector {
+            margin-left: 1em;
+        }
+    }
 }
 /* @media (max-width: 1024px) {
     #page-mod-quiz-report {

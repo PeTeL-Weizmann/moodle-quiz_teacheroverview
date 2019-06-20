@@ -17,9 +17,10 @@
 /**
  * This file defines the quiz grades table.
  *
- * @package   quiz_overview
+ * @package   quiz_teacheroverview
  * @copyright 2008 Jamie Pratt
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Devlion Moodle Development <service@devlion.co>
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -266,7 +267,7 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
         }
         return html_writer::link(new moodle_url('/mod/quiz/review.php',
                 array('attempt' => $attempt->attempt)), $grade,
-                array('title' => get_string('reviewattempt', 'quiz')));
+                array('title' => get_string('reviewattempt', 'quiz'), 'data-rel' => $grade));
     }
 
     /**
@@ -358,7 +359,6 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
             $reviewparams['step'] = $this->step_no_for_try($attempt->usageid, $slot, $attempt->try);
         }
 
-        // TODO PTL-544.
         $url = new moodle_url('/mod/quiz/comment.php', $reviewparams);
 
         $output = $OUTPUT->action_link($url, $output,
@@ -433,5 +433,118 @@ class quiz_teacheroverview_table extends quiz_attempts_report_table {
         return html_writer::link(
                         new moodle_url('/mod/quiz/review.php', array('attempt' => $attempt->attempt)),
                         $html, array('class' => 'reviewlink'));
+    }
+
+    public function wrap_html_start() {
+        global $PAGE;
+
+        if ($this->is_downloading() || !$this->includecheckboxes) {
+            return;
+        }
+
+        $url = $this->options->get_url();
+        $url->param('sesskey', sesskey());
+
+        echo '<div id="tablecontainer">';
+        echo '<form id="attemptsform" method="post" action="' . $url->out_omit_querystring() . '">';
+
+        echo html_writer::input_hidden_params($url);
+
+        if (has_capability('mod/quiz:deleteattempts', $this->context)) {
+            echo '<input type="hidden" class="btn btn-secondary m-r-1"
+                id="deleteattemptsbutton" name="delete" value="' .
+                get_string('deleteselected', 'quiz_teacheroverview') . '"/>';
+            $PAGE->requires->event_handler('#deleteattemptsbutton', 'click', 'M.util.show_confirm_dialog',
+                array('message' => get_string('deleteattemptcheck', 'quiz')));
+        }
+
+        echo '<div>';
+    }
+
+    public function finish_html() {
+        global $OUTPUT;
+        if (!$this->started_output) {
+            // No data has been added to the table.
+            $this->print_nothing_to_display();
+
+        } else {
+            // Print empty rows to fill the table to the current pagesize.
+            // This is done so the header aria-controls attributes do not point to
+            // non existant elements.
+            $emptyrow = array_fill(0, count($this->columns), '');
+            while ($this->currentrow < $this->pagesize) {
+                $this->print_row($emptyrow, 'emptyrow');
+            }
+
+            echo html_writer::end_tag('tbody');
+            echo html_writer::end_tag('table');
+            echo html_writer::end_tag('div');
+            $this->wrap_html_finish();
+        }
+    }
+
+    public function wrap_html_finish() {
+        global $PAGE;
+        if ($this->is_downloading() || !$this->includecheckboxes) {
+            return;
+        }
+
+        // Close the form.
+        echo '</div>';
+        echo '</form></div>';
+    }
+
+    /**
+     * @param array $headers numerical keyed array of displayed string titles
+     * for each column.
+     */
+    public function define_headers($headers) {
+        global $PAGE;
+
+        if (!$this->is_downloading()) {
+            // Select all / Deselect all.
+            $checkboxhader = '';
+            $checkboxhader .= '<div id="commands">';
+            $checkboxhader .= '<a id="checkattempts" href="#">' .
+            get_string('selectall', 'quiz') . '</a> / ';
+            $checkboxhader .= '<a id="uncheckattempts" href="#">' .
+            get_string('selectnone', 'quiz') . '</a> ';
+            $PAGE->requires->js_amd_inline("
+                require(['jquery'], function($) {
+                    $('#checkattempts').click(function(e) {
+                        $('#attemptsform').find('input:checkbox').prop('checked', true);
+                        e.preventDefault();
+                    });
+                    $('#uncheckattempts').click(function(e) {
+                        $('#attemptsform').find('input:checkbox').prop('checked', false);
+                        e.preventDefault();
+                    });
+                });");
+            $checkboxhader .= '&nbsp;&nbsp;';
+            $checkboxhader .= '</div>';
+
+            $headers[0] = $checkboxhader;
+        }
+        $this->headers = $headers;
+
+    }
+
+    /**
+     * Generate the display of the checkbox column.
+     * @param object $attempt the table row being output.
+     * @return string HTML content to go inside the td.
+     */
+    public function col_checkbox($attempt) {
+        if ($attempt->attempt) {
+            return '<input type="checkbox" name="attemptid[]" value="'.$attempt->attempt.'
+                " data-userid="'.$attempt->userid.'" class="userid-checkbox" />';
+        } else {
+            return '';
+        }
+    }
+
+    public function download_buttons() {
+        global $OUTPUT;
+        return;
     }
 }

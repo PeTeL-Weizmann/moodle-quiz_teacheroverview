@@ -4,11 +4,22 @@
             <div class="average-grade-title">{{#str}}average_grade, quiz_teacheroverview{{/str}}</div>
             <div class="average-grade-value">{{averagegrade}}</div>
         </div>
-        <div class="average-grade-title">{{#str}}max_grade, quiz_teacheroverview{{/str}}</div>
-        <div class="average-grade-value">{{maxgrade}}</div>
-        <div class="average-grade-title">{{#str}}min_grade, quiz_teacheroverview{{/str}}</div>
-        <div  class="average-grade-value">{{mingrade}}</div>
-        <div class="average-grade-title">{{#str}}attempts, quiz_teacheroverview{{/str}}</div>
-        <div  class="average-grade-value">{{attempts}}</div>
+
+        <div class="clickable-grade" data-rel="{{maxgrade}}" data-title="{{str_max_grade}}">
+            <div class="average-grade-title">{{title_max_grade}}</div>
+            <div class="average-grade-value">{{maxgrade}}</div>
+        </div>
+
+
+        <div class="clickable-grade" data-rel="{{mingrade}}" data-title="{{str_min_grade}}">
+            <div class="average-grade-title">{{title_min_grade}}</div>
+            <div  class="average-grade-value">{{mingrade}}</div>
+        </div>
+
+
+        <div class="average-grade-title">{{title_attempts_grade}}</div>
+        <div  class="average-grade-value not-clicable">{{attempts}}</div>
+
+
     {{/block1}}
 </div>

@@ -296,7 +296,7 @@
   overflow: hidden;
 }
 
-#page-mod-quiz-report .hidden {
+#page-mod-quiz-report .page-content .hidden {
   display: none !important;
   visibility: hidden !important;
 }

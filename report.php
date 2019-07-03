@@ -338,6 +338,17 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                     get_string('regradeselected', 'quiz_teacheroverview') . '"/>';
             }
 
+            // Show only users with attempts.
+
+            $buttons .= '<a href="#" id="id_onlygradedui" name="onlygradedui" class="btn btn-secondary toggle-switch-area m-r-1">
+            <label class="toggle-switch">
+            <span class="toggle-slider round "></span>
+            </label>
+            <span class="">
+            ' . get_string('finished_attempt', 'quiz_teacheroverview') . '
+            </span>
+            </a>';
+
             if (!$table->is_downloading()) {
                 // Chart's filter status block.
                 echo $OUTPUT->render_from_template('quiz_teacheroverview/filterstatus',

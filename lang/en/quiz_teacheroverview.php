@@ -80,7 +80,7 @@ $string['closeattemptsselected'] = 'Close attempts';
 $string['buttonchangedisplayfull'] = 'Full report';
 $string['buttonchangedisplaybasic'] = 'Basic report';
 $string['sendmessage'] = 'Send a message';
-
+$string['finished_attempt'] = 'Finished Attempt';
 // Teacher overview native.
 $string['average_grade'] = 'Average grade';
 $string['max_grade'] = 'Max grade';

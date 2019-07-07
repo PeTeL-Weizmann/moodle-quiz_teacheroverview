@@ -43,6 +43,7 @@ $string['attempts'] = 'מספר ניסיונות מענה';
 $string['deleteselected'] = 'מחיקת נסיונות';
 $string['closeattemptsselected'] = 'סגירת נסיונות';
 $string['sendmessage'] = 'שליחת מסר';
+$string['finished_attempt'] = 'מענה אחד שהסתיים';
 
 // Filter status.
 $string['table_results'] = 'תוצאות המשימה:';

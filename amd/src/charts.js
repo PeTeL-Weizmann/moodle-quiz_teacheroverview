@@ -218,6 +218,45 @@ define(['jquery', 'quiz_teacheroverview/d3', 'quiz_teacheroverview/nvd3amd', 'co
                 $("HTML, BODY").animate({scrollTop: $("#attempts").offset().top}, 800); // Scroll to the results table body.
             });
 
+            // Finished attempts.
+            $('#page-mod-quiz-report #id_onlygradedui').click(function (e) {
+                e.preventDefault();
+                index = 0;
+                var gradecell = 'td.teacheroverviewgrades';
+                var cocell = 'td.c0 input';
+                var attempts = [];
+                if (window.lastindex === index) {
+                    $('#id_onlygradedui > label > span').removeClass('toggle-checked');
+                    resetFilter(); // Reset table view if user clicks the same bar again.
+                    attempts = [];
+                } else {
+                    $('#id_onlygradedui > label > span').addClass('toggle-checked');
+                    // Prepare attempts for filtering.
+                    $('#attempts tbody tr').not('.emptyrow').each(function () {
+                        var grade = $(this).find(gradecell).text();
+                        if (index === 0 && !grade.includes('-')) {
+                            var attempt = $(this).find(cocell).prop('value');
+                            var userid = $(this).find(cocell).data('userid');
+                            if (attempt !== undefined) {
+                                if (attempts[userid] === undefined || attempts[userid] <= attempt) {
+                                    attempts[userid] = attempt;
+                                }
+                            }
+                        }
+                    })
+                    // Filtering attempts.
+                    $('#attempts tbody tr').not('.emptyrow').each(function () {
+                        $(this).show(); // Reset table view - show all rows.
+                        $(this).toggle(); // Hide every row.
+                        if (attempts[$(this).find(cocell).data('userid')] == $(this).find(cocell).prop('value') && attempts[$(this).find(cocell).data('userid')] !== undefined) {
+                            $(this).toggle(); // Special conditions for 'submitted'.
+                        }
+                    });
+                    window.lastindex = index; // Remember last clicked bar.
+                    $("HTML, BODY").animate({ scrollTop: $("#attempts").offset().top }, 800); // Scroll to the results table body.
+                }
+            });
+
         } // init end
     };
 });

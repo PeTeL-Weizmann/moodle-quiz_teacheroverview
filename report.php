@@ -338,6 +338,17 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
                     get_string('regradeselected', 'quiz_teacheroverview') . '"/>';
             }
 
+            // Show only users with attempts.
+
+            $buttons .= '<a href="#" id="id_onlygradedui" name="onlygradedui" class="btn btn-secondary toggle-switch-area m-r-1">
+            <label class="toggle-switch">
+            <span class="toggle-slider round "></span>
+            </label>
+            <span class="">
+            ' . get_string('finished_attempt', 'quiz_teacheroverview') . '
+            </span>
+            </a>';
+
             if (!$table->is_downloading()) {
                 // Chart's filter status block.
                 echo $OUTPUT->render_from_template('quiz_teacheroverview/filterstatus',
@@ -1144,7 +1155,11 @@ class quiz_teacheroverview_report extends quiz_attempts_report {
             $questions[$i]->slot = $i;
 
             // Compute ratio of correct answers to all answers and define proper badge color.
-            $questions[$i]->ratio = $questions[$i]->rigthqcount / $usersfinished;
+            if ($usersfinished != 0) {
+                $questions[$i]->ratio = $questions[$i]->rigthqcount / $usersfinished;
+            } else {
+                $questions[$i]->ratio = null;
+            }
             if ($questions[$i]->ratio == 1) {
                 $questions[$i]->badgecolor = 'green';
             } else if ($questions[$i]->ratio >= 0.5 && $questions[$i]->ratio < 1) {
